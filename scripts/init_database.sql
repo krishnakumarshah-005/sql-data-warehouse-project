@@ -198,6 +198,11 @@ SET @start_time,end_time
 PRINT '>> Load Duration: ' 
     + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) 
     + ' seconds';
+
+BEGIN TRY
+END TRY
+BEGIN CATCH 
+END CATCH
 */
 
 CREATE PROCEDURE Bronze.load_bronze AS
@@ -256,6 +261,18 @@ TABLOCK
 );
 END
 
+EXEC Bronze.load_bronze
+DROP PROCEDURE Bronze.load_bronze
+
+
+
+
+
+SET @start_time=GETDATE()
+SET @end_time=GETDATE()
+PRINT '>> Load Duration: ' 
+    + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) 
+    + ' seconds';
 
 
 
