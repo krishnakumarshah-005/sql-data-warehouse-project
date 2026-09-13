@@ -66,3 +66,25 @@ OR cst_lastname != TRIM(cst_lastname)
 GROUP BY cst_id
 HAVING COUNT(*)>1;
 
+
+
+
+/*
+Cleansing of Bronze.crm_prd_info
+*/
+
+SELECT *
+FROM Bronze.crm_prd_info;
+
+SELECT 
+prd_id,
+prd_key,
+REPLACE(SUBSTRING(prd_key,1,5),'-','_') AS cat_id,
+SUBSTRING(prd_key,7,LEN(prd_key)) AS prd_key,
+prd_nm,
+ISNULL(prd_cost,0) AS prd_cost1,
+-- COALESCE(prd_cost,0) AS prd_cost2,
+COALESCE(prd_line,'S'),
+prd_start_dt,
+COALESCE(prd_end_dt,GETDATE())
+FROM Bronze.crm_prd_info;
