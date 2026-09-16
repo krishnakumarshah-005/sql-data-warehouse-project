@@ -139,3 +139,30 @@ FROM Bronze.crm_prd_info;
 
 SELECT *
 FROM Silver.crm_prd_info;
+
+
+/*
+--          
+Cleansing
+*/
+SELECT *
+FROM Silver.crm_sales_details;
+
+
+
+
+SELECT 
+sls_ord_num,
+sls_prd_key,
+sls_cust_id,
+CASE 
+	WHEN sls_order_dt=0 OR LEN(sls_order_dt)!=8 THEN NULL
+	ELSE sls_order_dt
+	END AS sls_order_dt,
+sls_ship_dt,
+sls_due_dt,
+ISNULL(sls_sales,0),
+sls_quantity,
+ISNULL(sls_price,0)
+FROM Bronze.crm_sales_details
+WHERE sls_order_dt = 0 OR LEN(sls_order_dt) != 8
