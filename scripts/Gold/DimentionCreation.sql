@@ -23,3 +23,26 @@ ON cci.cst_key=ela.cid;
 
 SELECT DISTINCT *
 FROM Gold.dim_customer;
+
+-------------------------------------------------------------------------------------------
+CREATE VIEW Gold.dim_product AS
+SELECT 
+ROW_NUMBER() OVER(ORDER BY prd_start_dt,prd_key) AS Product_Key,
+cpi.prd_id AS Product_Id,
+cpi.prd_key AS Product_Number,
+cpi.prd_nm AS Product_Name,
+cpi.cat_id AS Category_Id,
+epcg.cat AS Category,
+epcg.subcat AS SubCategory,
+epcg.maintenance AS Maintenance,
+cpi.prd_cost AS Product_Cost,
+cpi.prd_line AS Product_Line,
+cpi.prd_start_dt AS Product_Start_Date
+FROM Silver.crm_prd_info AS cpi
+LEFT JOIN
+Silver.erp_px_cat_g1v2 AS epcg
+ON cpi.cat_id=epcg.id;
+
+SELECT *
+FROM
+Gold.dim_product;
